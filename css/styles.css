@@ -1,0 +1,51 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background: #e5e5e5;
+    font-family: 'Roboto', sans-serif;
+}
+
+
+/* TOPO / FOOTER */
+
+header,
+footer {
+    position: fixed;
+    right: 0;
+    width: 100%;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    background: white;
+    box-shadow: 0 0 5px 3px rgba(0, 0, 0, 0.07);
+}
+
+/* TOPO */
+
+header {
+    top: 0;
+}
+header img {
+    width: 75px;
+}
+header ion-icon {
+    font-size: 42px;
+}
+
+/* FOOTER */
+
+footer {
+    bottom: 0;
+}
+footer input {
+    border: none;
+    font-size: 18px;
+    font-style: italic;
+}
+footer ion-icon {
+    font-size: 30px;
+}
