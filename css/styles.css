@@ -1,10 +1,14 @@
 * {
     box-sizing: border-box;
 }
+strong {
+    font-weight: bold;
+}
 
 body {
     background: #e5e5e5;
     font-family: 'Roboto', sans-serif;
+    margin: 110px 0;
 }
 
 
@@ -48,4 +52,18 @@ footer input {
 }
 footer ion-icon {
     font-size: 30px;
+}
+
+/* MENSAGENS */
+li {
+    background-color: white;
+    box-sizing: content-box;
+    width: calc(100% -10px);
+    height: auto;
+    padding: 10px;
+    margin-bottom: 4px;
+}
+.hora-msg {
+    color: rgb(170, 170, 170);
+    margin-right: 10px;
 }
