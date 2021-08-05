@@ -3,8 +3,8 @@ const status = [];
 const URL_MENSAGENS = 'https://mock-api.bootcamp.respondeai.com.br/api/v3/uol/messages';
 const URL_STATUS = 'https://mock-api.bootcamp.respondeai.com.br/api/v3/uol/status';
 const URL_PARTICIPANTS = 'https://mock-api.bootcamp.respondeai.com.br/api/v3/uol/participants';
-
-const nome = {name: "cadu"};
+const nomeInserido = "Cadu";
+const nome = {name: nomeInserido};
 
 entraServidor();
 recebeMensagens();
@@ -17,7 +17,8 @@ function entraServidor() {
 
 function funcaoVerificaNome(promise) {
     for(let i = 0; i < promise.data.length; i++) {
-        if(promise.data[i].name === "cadu") {
+        //Esse if evita dar erros em caso de f5 na página
+        if(promise.data[i].name === nomeInserido) {
             return;
         } 
     }
@@ -67,18 +68,16 @@ function atualizaMensagens(promise) {
 }
 
 function enviaMensagem() {
-    let mensagemDigitada = document.querySelector('.texto').value;
+    const mensagemDigitada = document.getElementById('txt').value;
     const paraEnviar = {
-        from: "Cadu",
+        from: nomeInserido,
         to: "Todos",
         text: mensagemDigitada,
         type: "message"
     }
-
-    const promiseEnviar = axios.post(URL_MENSAGENS, paraEnviar);
-    promiseEnviar.catch(verificaErro);
-}
-
-function verificaErro(error) {
-    console.log(error.response);
+    if(mensagemDigitada !== '') {
+        const promiseEnviar = axios.post(URL_MENSAGENS, paraEnviar);
+        promiseEnviar.then(recebeMensagens);
+    }
+    document.getElementById('txt').value = '';
 }
