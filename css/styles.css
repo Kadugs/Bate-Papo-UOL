@@ -83,3 +83,31 @@ li {
     color: rgb(170, 170, 170);
     margin-right: 10px;
 }
+.mensagem-pv {
+    background: #FFDEDE;
+}
+
+.container-menu-lateral {
+    display: none;
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.705);
+    flex-direction: column;
+}
+.container-menu-lateral > div {
+    position: absolute;
+    width: 30vw;
+    height: 100vh;
+    left: 0;
+}
+.menu-lateral {
+    z-index: 2;
+    background-color: white;
+    position: absolute;
+    width: 70vw;
+    height: 100vh;
+    right: 0;
+}

@@ -15,13 +15,39 @@
 <body>
     <header>
         <img src="/src/logo-bate-papo-uol.png">
-        <ion-icon name="people"></ion-icon>
+        <ion-icon name="people" onclick="revelaMenuOnline();" ></ion-icon>
     </header>
     
     <main>
         <ul class="lista-mensagens">
         </ul>
     </main>
+    
+    <div class="container-menu-lateral">
+        <div onclick="ocultaLateral()"></div>
+        <aside class="menu-lateral">
+
+            <div class="escolha-contato">
+                <p>Escolha um contato para enviar a mensagem:</p>
+                <ul class="pessoas-online">
+                </ul>
+            </div>
+
+            <div class="visibilidade">
+                <p><strong>Escolha a visibilidade</strong></p>
+                <ul>
+                    <li>
+                        <ion-icon name="lock-open"></ion-icon>
+                        <span> Público</span>
+                    </li>
+                    <li>
+                        <ion-icon name="lock-closed"></ion-icon>
+                        <span> Reservadamente</span>
+                    </li>
+                </ul>
+            </div>
+        </aside>
+    </div>
     
     <footer>
         <input type="text" placeholder="Escreva aqui" class="texto" id="txt">
