@@ -1,44 +1,84 @@
 const mensagens = [];
-const promiseMensagens = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v3/uol/messages');
+const status = [];
+const URL_MENSAGENS = 'https://mock-api.bootcamp.respondeai.com.br/api/v3/uol/messages';
+const URL_STATUS = 'https://mock-api.bootcamp.respondeai.com.br/api/v3/uol/status';
+const URL_PARTICIPANTS = 'https://mock-api.bootcamp.respondeai.com.br/api/v3/uol/participants';
 
-function entraServidor() {
-    const nome = {name: "cadu"};
-    axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v3/uol/participants', nome);
-    setInterval(online, 5000, nome);
-    promiseMensagens.then(recebeMensagens);
-}
+const nome = {name: "cadu"};
+
 entraServidor();
+recebeMensagens();
+function entraServidor() {
+    const verificaNome = axios.get(URL_PARTICIPANTS);
+    verificaNome.then(funcaoVerificaNome);
+    setInterval(recebeMensagens, 3000);
+    setInterval(online, 5000, nome);
+}
 
+function funcaoVerificaNome(promise) {
+    for(let i = 0; i < promise.data.length; i++) {
+        if(promise.data[i].name === "cadu") {
+            return;
+        } 
+    }
+    axios.post(URL_PARTICIPANTS, nome);
+}
 
 function online(nome) {
-    axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v3/uol/status', nome);
+    axios.post(URL_STATUS, nome);
 }
 
-function recebeMensagens(promise) {
+function recebeMensagens() {
+    const promiseMensagens = axios.get(URL_MENSAGENS);
+    promiseMensagens.then(atualizaMensagens);
+}
+
+const ul = document.querySelector(".lista-mensagens");
+
+function atualizaMensagens(promise) {
+    ul.innerHTML = "";
     let msgs = 0;
-    console.log(promise.data)
-    for(let i = 0; i < 100; i++) {
-        if(promise.data[i].type === "message" && promise.data[i].to === "Todos") {
+    let sts = 0;
+    for(let i = 0; i < promise.data.length; i++) {
+        if(promise.data[i].type === "message") {
             mensagens[msgs] = promise.data[i];
-            adicionaDOM();
+            adicionaMensagemDOM(msgs);
             msgs++;
+        } else if(promise.data[i].type === "status") {
+            status[sts] = promise.data[i];
+            adicionaStatusDOM(sts);
+            sts++;
         }
     }
-}
-function adicionaDOM() {
-    const ul = document.querySelector(".lista-mensagens");
-    for(i = 0; i < mensagens.length; i++) {
-        ul.innerHTML += `<li> <span class="hora-msg">(${mensagens[i].time})</span><strong class="pessoa-msg">${mensagens[i].from} </strong>
-        para <strong class="pessoa-msg">${mensagens[i].from}</strong>: <span class="texto-msg">${mensagens[i].text} </span> </li>`;
+    
+    const ultimoElemento = document.querySelector("li:last-child");
+    ultimoElemento.scrollIntoView(true);
+
+    function adicionaMensagemDOM(valor) {
+        ul.innerHTML += `<li class="mensagem"> <span class="hora-msg">(${mensagens[valor].time})</span><strong class="pessoa-msg">${mensagens[valor].from} </strong>
+        para <strong class="pessoa-msg">${mensagens[valor].to}</strong>: <span class="texto-msg">${mensagens[valor].text} </span> </li>`;
+        // console.log(mensagens[valor]);
     }
-} 
+
+    function adicionaStatusDOM(valor) {
+        ul.innerHTML += `<li class="status"> <span class="hora-msg">(${status[valor].time})</span><strong class="pessoa-msg">${status[valor].from} </strong>
+        <span class="texto-msg">${status[valor].text} </span></li>`;
+    }
+}
 
 function enviaMensagem() {
-    // const paraEnviar = {
-    //     from: "Cadu",
-    //     to: "Todos",
-    //     text: "olá olá",
-    //     type: "message"
-    // }
-    // axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v3/uol/messages', paraEnviar);
+    let mensagemDigitada = document.querySelector('.texto').value;
+    const paraEnviar = {
+        from: "Cadu",
+        to: "Todos",
+        text: mensagemDigitada,
+        type: "message"
+    }
+
+    const promiseEnviar = axios.post(URL_MENSAGENS, paraEnviar);
+    promiseEnviar.catch(verificaErro);
+}
+
+function verificaErro(error) {
+    console.log(error.response);
 }
