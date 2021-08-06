@@ -28,21 +28,27 @@
         <aside class="menu-lateral">
 
             <div class="escolha-contato">
-                <p>Escolha um contato para enviar a mensagem:</p>
+                <p><strong>Escolha um contato para enviar a mensagem:</strong></p>
                 <ul class="pessoas-online">
                 </ul>
             </div>
 
-            <div class="visibilidade">
+            <div>
                 <p><strong>Escolha a visibilidade</strong></p>
-                <ul>
-                    <li>
-                        <ion-icon name="lock-open"></ion-icon>
-                        <span> Público</span>
+                <ul class="visibilidade">
+                    <li class="selecionado" onclick="selecionaObjeto(this)">
+                        <div>
+                            <ion-icon name="lock-open"></ion-icon>
+                            <span class="message"> Público</span>
+                        </div>
+                        <ion-icon name="checkmark-sharp" class="item-selecionado"></ion-icon>
                     </li>
-                    <li>
-                        <ion-icon name="lock-closed"></ion-icon>
-                        <span> Reservadamente</span>
+                    <li onclick="selecionaObjeto(this)">
+                        <div>
+                            <ion-icon name="lock-closed"></ion-icon>
+                            <span class="private_message"> Reservadamente</span>
+                        </div>
+                        <ion-icon name="checkmark-sharp" class="item-selecionado escondido"></ion-icon>
                     </li>
                 </ul>
             </div>
