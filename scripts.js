@@ -4,30 +4,37 @@ const mensagensPv = [];
 const URL_MENSAGENS = 'https://mock-api.bootcamp.respondeai.com.br/api/v3/uol/messages';
 const URL_STATUS = 'https://mock-api.bootcamp.respondeai.com.br/api/v3/uol/status';
 const URL_PARTICIPANTS = 'https://mock-api.bootcamp.respondeai.com.br/api/v3/uol/participants';
-const nomeInserido = prompt('Qual é o seu nome?');
-const nome = {name: nomeInserido};
+let nomeInserido = '';
 let destinatario = "Todos";
 let visibilidade = "message";
 
-function entraServidor() {
-    const verificaNome = axios.get(URL_PARTICIPANTS);
-    verificaNome.then(funcaoVerificaNome);
+function login() {
+    nomeInserido = document.getElementById('nomeLogin').value;
+    const pegaNomes = axios.get(URL_PARTICIPANTS);
+    pegaNomes.then(verificaNome);
+}
+
+function entraServidor(nome) {
     setInterval(recebeMensagens, 3000);
     setInterval(online, 5000, nome);
-
+    
     const listaDoServer = axios.get(URL_PARTICIPANTS);
     listaDoServer.then(atualizaPessoasOnline);
 }
-entraServidor();
 
-function funcaoVerificaNome(promise) {
+function verificaNome(promise) {
     for(let i = 0; i < promise.data.length; i++) {
         //Esse if evita dar erros em caso de f5 na página
-        if(promise.data[i].name === nomeInserido) {
+        if(promise.data[i].name === nomeInserido || nomeInserido === '') {
+            document.querySelector(".nome-invalido").classList.remove("escondido");
             return;
         } 
     }
+    const nome = {name: nomeInserido};
     axios.post(URL_PARTICIPANTS, nome);
+    document.querySelector(".container-login").classList.add("escondido");
+    entraServidor(nome);
+    recebeMensagens();
 }
 
 function online(nome) {
@@ -40,7 +47,6 @@ function recebeMensagens() {
     promiseMensagens.catch(trataErros);
 
 }
-recebeMensagens();
 
 function atualizaMensagens(promise) {
     const ul = document.querySelector(".lista-mensagens");
@@ -83,15 +89,12 @@ function atualizaMensagens(promise) {
     }
 }
 
-//envia mensagem ao pressionar enter
-document.addEventListener("keypress", function(e) {
-    if(e.key === "Enter") {
-        enviaMensagem();
-    }
-});
 
 function enviaMensagem() {
     const mensagemDigitada = document.getElementById('txt').value;
+    if(destinatario === "Todos") {
+        visibilidade = "message";
+    }
     const paraEnviar = {
         from: nomeInserido,
         to: destinatario,
@@ -106,6 +109,12 @@ function enviaMensagem() {
     }
     document.getElementById('txt').value = '';
 }
+//envia mensagem ao pressionar enter
+document.addEventListener("keypress", function(e) {
+    if(e.key === "Enter") {
+        enviaMensagem();
+    }
+});
 
 function trataErros(error) {
     console.log(error.response.data);
@@ -131,9 +140,6 @@ function listaPessoas(lista) {
         </div>
         <ion-icon name="checkmark-sharp" class="item-selecionado"></ion-icon>
 </li>`;
-
-    destinatario = "Todos";
-    visibilidade = "message"
 
     for(let i = 0; i < lista.data.length; i++) {
         if(lista.data[i].name !== nomeInserido) {

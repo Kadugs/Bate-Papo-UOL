@@ -63,6 +63,9 @@ footer input:focus::placeholder {
 footer ion-icon {
     font-size: 30px;
 }
+footer .infos-de-envio {
+    margin-bottom: 6px;
+}
 
 /* MENSAGENS */
 li {
@@ -105,7 +108,7 @@ li {
     height: 100vh;
     left: 0;
 }
-.menu-lateral {
+aside {
     background-color: white;
     position: absolute;
     width: 70vw;
@@ -113,30 +116,83 @@ li {
     right: 0;
     font-size: 16px;
 }
-.menu-lateral strong {
+aside strong {
     display: inline-block;
     width: 200px;
     text-align: center;
-    margin: 30px 40px;
+    margin: 30px;
 }
-.menu-lateral ion-icon {
+aside ion-icon {
     font-size: 24px;
     margin-left: 10px;
     margin-right: 7px;
 }
-.menu-lateral li,
-.menu-lateral li div {
+aside li,
+aside li div {
     display:  flex;
     align-items: center;
 }
-.menu-lateral li {
+aside li {
     justify-content: space-between;
 }
 .item-selecionado {
-    font-size: 200px;
+    font-size: 15px;
     color: #28BB25;
 }
 
 .escondido {
-    display: none;
+    display: none !important;
+}
+
+.container-login {
+    z-index: 1;
+    background: white;
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    right: 0;
+    top: 0;
+    display: flex;
+    justify-content: center;
+}
+
+.login {
+    margin-top: 100px;
+    width: 80vw;
+    height: 340px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.login img {
+    width: 140px;
+    margin-bottom: 100px;
+}
+
+
+#nomeLogin {
+    text-align: center;
+    color: rgb(105, 105, 105);
+    font-size: 18px;
+    width: 261px;
+    height: 54px;
+    border-radius: 4px;
+    border: solid 1px rgb(175, 175, 175); 
+}
+
+.botao-login {
+    font-size: 18px;
+    color: rgb(105, 105, 105);
+    margin-top: 15px;
+    background: rgb(231, 231, 231);
+    border: none;
+    width: 109px;
+    height: 45px;
+    border-radius: 4px;
+}
+.nome-invalido {
+    margin-top: 20px;
+    color: red;
 }

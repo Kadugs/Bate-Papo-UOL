@@ -23,18 +23,31 @@
         </ul>
     </main>
     
-    <div class="container-menu-lateral">
-        <div onclick="ocultaLateral()"></div>
-        <aside class="menu-lateral">
+    <div class="container-login">
+        <div class="login">
+            <img src="src/logo-bate-papo-uol.png">
+            <input type="text" placeholder="Digite seu nome" id="nomeLogin">
+            <p class="nome-invalido escondido"> Nome inserido inválido ou já está em uso. </p>
+            <input type="button" value="Entrar" class="botao-login" onclick="login();">
+        </div>
+    </div>
 
-            <div class="escolha-contato">
+    <div class="container-menu-lateral">
+        <div onclick="ocultaLateral();">
+        </div>
+        
+        <aside>
+
+            <div>
                 <p><strong>Escolha um contato para enviar a mensagem:</strong></p>
+
                 <ul class="pessoas-online">
                 </ul>
             </div>
 
             <div>
                 <p><strong>Escolha a visibilidade</strong></p>
+                
                 <ul class="visibilidade">
                     <li class="selecionado" onclick="selecionaObjeto(this)">
                         <div>
@@ -43,6 +56,7 @@
                         </div>
                         <ion-icon name="checkmark-sharp" class="item-selecionado"></ion-icon>
                     </li>
+                    
                     <li onclick="selecionaObjeto(this)">
                         <div>
                             <ion-icon name="lock-closed"></ion-icon>
@@ -56,7 +70,10 @@
     </div>
     
     <footer>
-        <input type="text" placeholder="Escreva aqui" class="texto" id="txt">
+        <div>
+            <input type="text" placeholder="Escreva aqui" id="txt">
+            <p class="infos-de-envio"></p>
+        </div>
         <ion-icon onclick="enviaMensagem();" name="paper-plane-outline"></ion-icon>
     </footer>
 
