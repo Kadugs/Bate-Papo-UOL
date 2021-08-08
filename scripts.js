@@ -15,11 +15,10 @@ function login() {
 }
 
 function entraServidor(nome) {
+    atualizaPessoasOnline();
     setInterval(recebeMensagens, 3000);
     setInterval(online, 5000, nome);
-    
-    const listaDoServer = axios.get(URL_PARTICIPANTS);
-    listaDoServer.then(atualizaPessoasOnline);
+    setInterval(atualizaPessoasOnline, 10000);
 }
 
 function verificaNome(promise) {
@@ -44,8 +43,6 @@ function online(nome) {
 function recebeMensagens() {
     const promiseMensagens = axios.get(URL_MENSAGENS);
     promiseMensagens.then(atualizaMensagens);
-    promiseMensagens.catch(trataErros);
-
 }
 
 function atualizaMensagens(promise) {
@@ -105,7 +102,6 @@ function enviaMensagem() {
     if(mensagemDigitada !== '') {
         const promiseEnviar = axios.post(URL_MENSAGENS, paraEnviar);
         promiseEnviar.then(recebeMensagens);
-        promiseEnviar.catch(trataErros);
     }
     document.getElementById('txt').value = '';
 }
@@ -116,18 +112,14 @@ document.addEventListener("keypress", function(e) {
     }
 });
 
-function trataErros(error) {
-    console.log(error.response.data);
-}
-
 function revelaMenuOnline() {
     const menu = document.querySelector('.container-menu-lateral');
     menu.style.display = 'flex';
 }
 
-function atualizaPessoasOnline(lista) {
-    listaPessoas(lista);
-    setInterval(listaPessoas, 10000, lista);
+function atualizaPessoasOnline() {
+    const listaDoServer = axios.get(URL_PARTICIPANTS);
+    listaDoServer.then(listaPessoas);
 }
 
 function listaPessoas(lista) {
@@ -157,9 +149,21 @@ function listaPessoas(lista) {
 function ocultaLateral() {
     const menu = document.querySelector('.container-menu-lateral');
     menu.style.display = 'none';
+    alteraInfoEnvio();
 }
 
 // SELEÇÃO DO MENU LATERAL
+
+function alteraInfoEnvio() {
+    const infoNome = document.getElementById('infoNome');
+    const infoReservada = document.getElementById('infoReservada');
+    infoNome.innerHTML = destinatario;
+    if(visibilidade === 'private_message' && destinatario !== 'Todos') {
+        infoReservada.innerHTML = ' (reservadamente)'
+    } else {
+        infoReservada.innerHTML = ''
+    }
+}
 
 function alteraSelecao(selecionado, pai) {
     const anteriorSelecionado = pai.querySelector(".selecionado");
