@@ -114,7 +114,7 @@ li {
 .container-menu-lateral > div {
     position: absolute;
     width: 30vw;
-    height: inherit;
+    height: 100vh;
     left: 0;
 }
 aside {
