@@ -32,6 +32,7 @@ function verificaNome(promise) {
     const nome = {name: nomeInserido};
     axios.post(URL_PARTICIPANTS, nome);
     document.querySelector(".container-login").classList.add("escondido");
+
     entraServidor(nome);
     recebeMensagens();
 }
@@ -48,9 +49,11 @@ function recebeMensagens() {
 function atualizaMensagens(promise) {
     const ul = document.querySelector(".lista-mensagens");
     ul.innerHTML = "";
+
     let msgs = 0;
     let sts = 0;
     let pv = 0;
+
     for(let i = 0; i < promise.data.length; i++) {
         if(promise.data[i].type === "message") {
             mensagens[msgs] = promise.data[i];
@@ -125,25 +128,26 @@ function atualizaPessoasOnline() {
 function listaPessoas(lista) {
     const pessoasOnline = document.querySelector('.pessoas-online');
     //Reseta os valores anteriores
-    pessoasOnline.innerHTML = `<li onclick="selecionaObjeto(this)" class="todos selecionado">
+    pessoasOnline.innerHTML = `<li onclick="selecionaOpcao(this)">
     <div>
         <ion-icon name="people"></ion-icon>
-        <span>Todos</span>
+        <span class="todos">Todos</span>
         </div>
-        <ion-icon name="checkmark-sharp" class="item-selecionado"></ion-icon>
+        <ion-icon name="checkmark-sharp" class="item-selecionado escondido"></ion-icon>
 </li>`;
 
     for(let i = 0; i < lista.data.length; i++) {
         if(lista.data[i].name !== nomeInserido) {
-            pessoasOnline.innerHTML += `<li onclick="selecionaObjeto(this)">
+            pessoasOnline.innerHTML += `<li onclick="selecionaOpcao(this)">
                 <div>
                     <ion-icon name="person-circle"></ion-icon>
-                    <span> ${lista.data[i].name}</span>
+                    <span class="pessoas"> ${lista.data[i].name}</span>
                     </div>
                     <ion-icon name="checkmark-sharp" class="item-selecionado escondido"></ion-icon>
             </li>`
         }
     }
+    selecionaAoAtualizar();
 }
 
 function ocultaLateral() {
@@ -158,6 +162,7 @@ function alteraInfoEnvio() {
     const infoNome = document.getElementById('infoNome');
     const infoReservada = document.getElementById('infoReservada');
     infoNome.innerHTML = destinatario;
+    
     if(visibilidade === 'private_message' && destinatario !== 'Todos') {
         infoReservada.innerHTML = ' (reservadamente)'
     } else {
@@ -176,16 +181,36 @@ function alteraSelecao(selecionado, pai) {
         anteriorSelecionado.querySelector(".item-selecionado").classList.add('escondido');
     }  
 }
-function selecionaObjeto(objeto) {
+function selecionaOpcao(opcao) {
     const pessoasOnline = document.querySelector('.pessoas-online');
     const visibilidadeEscolhida = document.querySelector('.visibilidade');
 
-    if(objeto.parentNode === pessoasOnline) {
-        alteraSelecao(objeto, pessoasOnline);
-        destinatario = objeto.querySelector('span').innerHTML;
+    if(opcao.parentNode === pessoasOnline) {
+        alteraSelecao(opcao, pessoasOnline);
+        destinatario = opcao.querySelector('span').innerHTML;
         
-    } else if(objeto.parentNode === visibilidadeEscolhida) {
-        alteraSelecao(objeto, visibilidadeEscolhida);
-        visibilidade = objeto.querySelector('span').classList.item(0);
+    } else if(opcao.parentNode === visibilidadeEscolhida) {
+        alteraSelecao(opcao, visibilidadeEscolhida);
+        visibilidade = opcao.querySelector('span').classList.item(0);
     }
+}
+
+function selecionaAoAtualizar() {
+    const todos = document.querySelector('.todos');
+    const pessoas = document.querySelectorAll('.pessoas');
+    for(let i = 0; i < pessoas.length; i++) {
+        if(pessoas[i].innerHTML === destinatario) {
+            let pessoa = pessoas[i].parentNode.parentNode;
+            pessoa.classList.add('selecionado');
+            pessoa.querySelector(".item-selecionado").classList.remove("escondido");
+            return;
+        }
+    }
+
+    //caso esteja iniciando ou a pessoa selecionada saia, irá voltar para o padrão:
+    destinatario = 'Todos';
+    visibilidade = 'message';
+    let liTodos = todos.parentNode.parentNode
+    liTodos.classList.add('selecionado');
+    liTodos.querySelector(".item-selecionado").classList.remove('escondido')
 }
